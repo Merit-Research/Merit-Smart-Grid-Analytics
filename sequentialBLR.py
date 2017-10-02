@@ -34,7 +34,7 @@ import modules.settings as settings
 import modules.zway as zway
 from modules.datalog import Datalog
 from modules.algo import Algo
-import modules.sound
+import modules.sound as Sound
 
 #==================== FUNCTIONS ====================#
 
@@ -43,6 +43,10 @@ def get_features(zserver, sound=False):
     features = []
     for key in zserver.device_IDs():
         features.append(zserver.get_data(key))
+    if sound: 
+        sound = Sound.get_sound()
+        features.append(sound)
+    
     return features
     
 
@@ -107,11 +111,13 @@ def main(argv):
     severity_lambda = float(settings_dict['severity_lambda'])
     auto_regression = int(settings_dict['auto_regression'])
     
+    #Feature Name Collection for file Header
     feature_names = zserver.device_IDs()
     # Check if sound was enabled
     if args.sound:
         print("Sound Sensor Enabled")
         feature_names.append('sound')
+    # Number of Features +/- sound
     num_features = len(feature_names)
     
     print "Num features: ", num_features
@@ -146,7 +152,7 @@ def main(argv):
                 
         # Data collection
         #print "Recording sample at {}".format(goal_time)
-        features = get_features(zserver)
+        features = get_features(zserver, args.sound)
         power = get_power()
         features.append(power)
         data_log.log(features[:], goal_time)
