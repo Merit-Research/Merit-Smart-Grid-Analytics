@@ -141,7 +141,7 @@ def main(argv):
         goal_time = goal_time + granularity
                 
         # Data collection
-        print "Recording sample at {}".format(goal_time)
+        #print "Recording sample at {}".format(goal_time)
         features = get_features(zserver)
         power = get_power()
         features.append(power)
