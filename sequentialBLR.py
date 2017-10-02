@@ -34,7 +34,7 @@ import modules.settings as settings
 import modules.zway as zway
 from modules.datalog import Datalog
 from modules.algo import Algo
-
+import modules.sound
 
 #==================== FUNCTIONS ====================#
 
@@ -108,6 +108,10 @@ def main(argv):
     auto_regression = int(settings_dict['auto_regression'])
     
     feature_names = zserver.device_IDs()
+    # Check if sound was enabled
+    if args.sound:
+        print("Sound Sensor Enabled")
+        feature_names.append('sound')
     num_features = len(feature_names)
     
     print "Num features: ", num_features
