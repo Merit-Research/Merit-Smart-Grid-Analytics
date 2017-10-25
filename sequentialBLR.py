@@ -112,7 +112,9 @@ def main(argv):
     auto_regression = int(settings_dict['auto_regression'])
     
     #Feature Name Collection for file Header
-    feature_names = zserver.device_IDs()
+    #feature_names = zserver.device_IDs()
+    feature_names = zserver.all_device_names()
+
     # Check if sound was enabled
     if args.sound:
         print("Sound Sensor Enabled")

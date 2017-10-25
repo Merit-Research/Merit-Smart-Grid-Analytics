@@ -110,7 +110,7 @@ class Server(object):
                                     print str(e)
                                     print "ignoring device attr: " + device_type
                                     continue
-
+				print(name)
                                 self.devices[device_id]['name'] = name
 
         return self.devices
@@ -172,6 +172,14 @@ class Server(object):
     def device_name(self, device_id):
         """Return string representing the name of this device."""
         return self.devices[device_id]['name']
+
+    def all_device_names(self):
+        """Return string list representing the name of this devices."""
+	device_ids = self.device_IDs()
+	list_device = []
+	for d_id in device_ids:
+	    list_device.append(str(self.device_name(d_id)))
+        return list_device
 
     def save_devices_to_file(self, fh):
         """Prints device dictionary to a file-like object in json format."""
