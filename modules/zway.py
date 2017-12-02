@@ -80,6 +80,7 @@ class Server(object):
         for device_id_base in devices_page:
             device_count = 0
             instances = devices_page[device_id_base]['instances']
+            given_name = devices_page[device_id_base]['data']['givenName']['value']
             for instance_num in instances:
                 commandClasses = instances[instance_num]['commandClasses']
                 for commandClass in commandClasses:
@@ -104,14 +105,20 @@ class Server(object):
 
                                 device_type = self.device_type(device_id).strip()
                                 device_type = device_type.replace(' ', '_')
+                                
+                                name = device_id_base + '_' + device_type
+                                self.devices[device_id]['name'] = name
+                                self.devices[device_id]['header_name'] = name 
+                                
                                 try:
-                                    name = device_id_base + '_' + device_type
+                                    given_name = given_name.replace(" ", "")
+                                    header_name = given_name + '_' + device_type
+                                    self.devices[device_id]['header_name'] = header_name 
                                 except Exception as e:
                                     print str(e)
                                     print "ignoring device attr: " + device_type
                                     continue
-				print(name)
-                                self.devices[device_id]['name'] = name
+                                print(header_name)
 
         return self.devices
 
@@ -173,6 +180,14 @@ class Server(object):
         """Return string representing the name of this device."""
         return self.devices[device_id]['name']
 
+    def header_names(self):
+        """Return string list for device name for header ouput file."""
+	device_ids = self.device_IDs()
+	list_device = []
+	for d_id in device_ids:
+	    list_device.append(str(self.devices[d_id]['header_name']))
+        return list_device
+    
     def all_device_names(self):
         """Return string list representing the name of this devices."""
 	device_ids = self.device_IDs()
@@ -205,7 +220,7 @@ class Server(object):
                 if (attempt == num_attempts-1):
                     raise Exception("server did not respond, connection is lost")
             except requests.exceptions.Timeout:
-                print("Timed out {}".format(attempt))
+                # print("Timed out {}".format(attempt))
                 if (attempt == num_attempts-1):
                     raise Exception("server Timeout")
             else:
