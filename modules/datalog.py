@@ -66,7 +66,7 @@ class DatalogChild(object):
         # Make sure the folder does not end with '/'
         self.folder = folder.rstrip('/')
         self.prefix = prefix
-        self.date = dt.date.fromtimestamp(1505710800) 
+        self.date = None 
         self.fname = ""
         
         # Generate the header
@@ -89,10 +89,10 @@ class DatalogChild(object):
         """Add data to log files."""
         timestamp = sample[0]
         date = dt.date.fromtimestamp(timestamp)
-        print("self:{} date:{}".format(self.date,date)) 
+        #print("self:{} date:{}".format(self.date,date)) 
         # Check if new file is needed
         if self.date == None:
-            print("NONE") 
+            print("Firt Time runing: new file") 
             # Start new day, new file
             self.date = date
             self.fname = self.get_filename(date)
@@ -102,12 +102,14 @@ class DatalogChild(object):
             print("Compress")
             # Compress old file or files
             self.compress(self.date)
-            if date.month != self.date.month:
-                self.archive(self.get_month_folder(self.date))
+            # FIXME: Removed archive function errors 
+	    #if date.month != self.date.month:
+            #    self.archive(self.get_month_folder(self.date))
             
             # Start new day, new file
             self.date = date
             self.fname = self.get_filename(date)
+            print("New day: {}".format(self.fname))
             self.start_new_file(self.fname)
             
         # Record the sample
@@ -159,6 +161,7 @@ class DatalogChild(object):
 
     def archive(self, month):
         """Unzip every file in the folder and then archive and compress the folder."""
+	print("Archive running")
         if folder == '': return
         folder = prefix + '/' + folder
         for f in os.listdir(folder):

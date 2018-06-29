@@ -7,7 +7,7 @@ Setup
 --------------
 You will need to install arecord and SoX anylazer. Check to see if arecord is already installed first by simple typing arecord into the terminal window and oberving if it is a recognized command. If not follow the instruction to install the [Advanced Linux Sound Architecture (ALSA)](http://www.alsa-project.org/main/index.php/Main_Page) tool below which includes arecord as well. 
 
-- Install SoX anylazer: `sudo apt-get intall sox`
+- Install SoX anylazer: `sudo apt-get install sox`
 - Install ALSA: `sudo apt-get install alsa-utils`
 
 Notes and Code
